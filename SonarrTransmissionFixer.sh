@@ -46,7 +46,7 @@ if [[ "$EVENTTYPE" == "Test" ]]; then
     printf '%s | INFO  | Sonarr Event - %s\n' "$DT" "$EVENTTYPE" >> "$LOG"
     printferr "Successful connection test"
     exit 0;
-elif [[ "$EVENTTYPE" == "Download" ]]; then
+elif [[ "$EVENTTYPE" == "Grab" ]]; then
     printf '%s | INFO  | Sonarr Event - %s | %s | %s\n' "$DT" "$EVENTTYPE" "$SPATH" "${sonarr_episodefile_episodenumbers}" >> "$LOG"
     printferr "Processing id: $SERIES_ID | $TITLE | $SPATH | Episode ${sonarr_episodefile_episodenumbers}"
 else
