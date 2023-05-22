@@ -55,6 +55,7 @@ else
     exit 0
 fi
 
+while true; do
 if [ -e "$STORED_FILE" ]
 then
     printf '%s | INFO  | Processing new download of: %s\n' "$DT" "${sonarr_series_title}" >> "$LOG"
@@ -147,6 +148,7 @@ else
     else
         printf '%s | ERROR | No file exists to move or find!\n' "$DT" >> "$LOG"
     fi
+    sleep 10
 fi
 
 #Log upto a maximum of 100 lines
