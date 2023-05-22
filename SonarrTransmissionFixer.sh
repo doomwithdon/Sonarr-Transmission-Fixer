@@ -150,6 +150,7 @@ else
     fi
     sleep 10
 fi
+done
 
 #Log upto a maximum of 100 lines
 LINECOUNT=$(wc -l < $LOG)
