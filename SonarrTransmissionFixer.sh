@@ -8,7 +8,7 @@
 
 #VARIABLES set these before you start!
 #transmission
-REMOTE="transmission-remote -n USER:PASSWD" #Change USER and PASSWD
+#REMOTE="transmission-remote -n USER:PASSWD" #Change USER and PASSWD
 #sonarr
 DLDIR="sonarr" #Name of the folder sonarr downloads all torrents into, can be customised with 'Category' option in download client options
 ENABLE_SONARR_REFRESH=0 #set 1 if you want sonarr to refresh the series after moving a season download (not single eps) to scan all the newly moved files
@@ -87,8 +87,8 @@ then
     fi
     
     #-t TorrentID --find NewTorrentDataLocation
-    $REMOTE -t "$TORRENT_ID" --find "$DEST"
-    printf '%s | INFO  | Torrent ID: %s, data now in: %s\n' "$DT" "$TORRENT_ID" "$STORED_FILE" >> "$LOG"
+  #  $REMOTE -t "$TORRENT_ID" --find "$DEST"
+    #printf '%s | INFO  | Torrent ID: %s, data now in: %s\n' "$DT" "$TORRENT_ID" "$STORED_FILE" >> "$LOG"
 
     if [ -e "$ORIGIN_FILE" ]
     then
@@ -113,8 +113,8 @@ then
                     rm -rf "$SOURCEDIR"
                     printf '%s | INFO  | Deleted original additional files %s\n' "$DT" "$TDEST" >> "$LOG"
                     #We moved torrent folders, verify torrent to make sure everything is ok!
-                    $REMOTE -t "$TORRENT_ID" -v
-                    printferr "| INFO | Telling Transmission to verify files."
+                  #  $REMOTE -t "$TORRENT_ID" -v
+                  #  printferr "| INFO | Telling Transmission to verify files."
                     
                     if [ $ENABLE_SONARR_REFRESH -eq 1 ]; then
                         #This refreshes the series within sonarr and scans for the newly moved files instead of showing them uncompleted
