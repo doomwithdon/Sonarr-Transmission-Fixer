@@ -8,7 +8,7 @@
 
 #VARIABLES set these before you start!
 #transmission
-REMOTE="transmission-remote -n User:pass" #Change USER and PASSWD
+REMOTE="transmission-remote -n user:pass" #Change USER and PASSWD
 #sonarr
 DLDIR="sonarr" #Name of the folder sonarr downloads all torrents into, can be customised with 'Category' option in download client options
 ENABLE_SONARR_REFRESH=0 #set 1 if you want sonarr to refresh the series after moving a season download (not single eps) to scan all the newly moved files
@@ -131,6 +131,8 @@ then
         fi
         
     else
+        $REMOTE -t "$TORRENT_ID" -v
+        $REMOTE -t "$TORRENT_ID" -s
         printf '%s | ERROR | No origin file found to remove for: %s\n' "$DT" "$TORRENT_NAME" >> "$LOG"
     fi
 else
