@@ -8,7 +8,7 @@
 
 #VARIABLES set these before you start!
 #transmission
-#REMOTE="transmission-remote -n USER:PASSWD" #Change USER and PASSWD
+REMOTE="transmission-remote -n User:pass" #Change USER and PASSWD
 #sonarr
 DLDIR="sonarr" #Name of the folder sonarr downloads all torrents into, can be customised with 'Category' option in download client options
 ENABLE_SONARR_REFRESH=0 #set 1 if you want sonarr to refresh the series after moving a season download (not single eps) to scan all the newly moved files
@@ -46,16 +46,8 @@ if [[ "$EVENTTYPE" == "Test" ]]; then
     printf '%s | INFO  | Sonarr Event - %s\n' "$DT" "$EVENTTYPE" >> "$LOG"
     printferr "Successful connection test"
     exit 0;
-elif [[ "$EVENTTYPE" == "Grab" ]]; then
-    printf '%s | INFO  | Sonarr Event - %s | %s | %s\n' "$DT" "$EVENTTYPE" "$SPATH" "${sonarr_episodefile_episodenumbers}" >> "$LOG"
-    printferr "Processing id: $SERIES_ID | $TITLE | $SPATH | Episode ${sonarr_episodefile_episodenumbers}"
-else
-    printf '%s | WARN  | Unsupported Sonarr Event - %s\n' "$DT" "$EVENTTYPE" >> "$LOG"
-    printferr "Unsupported Event Type: %EVENTTYPE, only supports Import/Upgrade downloads"
-    exit 0
 fi
 
-while true; do
 if [ -e "$STORED_FILE" ]
 then
     printf '%s | INFO  | Processing new download of: %s\n' "$DT" "${sonarr_series_title}" >> "$LOG"
@@ -88,8 +80,8 @@ then
     fi
     
     #-t TorrentID --find NewTorrentDataLocation
-  #  $REMOTE -t "$TORRENT_ID" --find "$DEST"
-    #printf '%s | INFO  | Torrent ID: %s, data now in: %s\n' "$DT" "$TORRENT_ID" "$STORED_FILE" >> "$LOG"
+    $REMOTE -t "$TORRENT_ID" --find "$DEST"
+    printf '%s | INFO  | Torrent ID: %s, data now in: %s\n' "$DT" "$TORRENT_ID" "$STORED_FILE" >> "$LOG"
 
     if [ -e "$ORIGIN_FILE" ]
     then
@@ -114,8 +106,9 @@ then
                     rm -rf "$SOURCEDIR"
                     printf '%s | INFO  | Deleted original additional files %s\n' "$DT" "$TDEST" >> "$LOG"
                     #We moved torrent folders, verify torrent to make sure everything is ok!
-                  #  $REMOTE -t "$TORRENT_ID" -v
-                  #  printferr "| INFO | Telling Transmission to verify files."
+                    $REMOTE -t "$TORRENT_ID" -v
+                    $REMOTE -t "$TORRENT_ID" -s
+                    printferr "| INFO | Telling Transmission to verify files."
                     
                     if [ $ENABLE_SONARR_REFRESH -eq 1 ]; then
                         #This refreshes the series within sonarr and scans for the newly moved files instead of showing them uncompleted
@@ -148,9 +141,7 @@ else
     else
         printf '%s | ERROR | No file exists to move or find!\n' "$DT" >> "$LOG"
     fi
-    sleep 10
 fi
-done
 
 #Log upto a maximum of 100 lines
 LINECOUNT=$(wc -l < $LOG)
